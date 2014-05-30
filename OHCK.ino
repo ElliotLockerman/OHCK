@@ -12,7 +12,7 @@ void setup()
     pinMode(pins[i], INPUT_PULLUP);
   }
  
-  Serial.begin(9600);
+  //Serial.begin(9600);
   
   Keyboard.begin();
 
@@ -24,27 +24,27 @@ void setup()
 void loop()
 {
  int inputNum = 0;
- 
+
+ for(int x=0; x < 15; x++)// Outer loop for human timing
+ {
   for(int i=0; i <= 4; i++)
   {
-    Serial.print(digitalRead(pins[i]));
-    if (digitalRead(pins[i]) == 1) bitWrite(inputNum,i,0);
-  
-    else bitWrite(inputNum,i,1);
+    //Serial.print(digitalRead(pins[i]));
+    if (digitalRead(pins[i]) == 0) bitWrite(inputNum,i,1);  
   }   
+  }
   Serial.println();
   Serial.println(inputNum);
  
   // Tentatively set the character - we might change it later
   char character = inputNum + 96; //1 becomes a, etc 
  
- Serial.println(character);
- Serial.println();
+ //Serial.println(character);
+ //Serial.println();
 
   // Check to see if the key is the same as last time.
   // If its the same, assume its being held, so don't release
   // If there the character is 0, no button is being held; release. 
-  //if(character != buffer[0] || inputNum == 0) Keyboard.release(character);
   if(inputNum == 0) Keyboard.releaseAll();
 
   
@@ -73,19 +73,20 @@ void loop()
     //Serial.println(character);
     Keyboard.press(character);
     
-    // Because a human can't push them all down
-    // we need to give a bit of a delay.
+    
     
   }
-
- 
- 
-  delay(200);
   
- 
+  
   // Roll the buffer for the next round
   /*
   buffer[1] = buffer[0];
   buffer[0] = character; 
- */
+ */  
+
+
+  delay(200);
+  
+ 
+
 }
