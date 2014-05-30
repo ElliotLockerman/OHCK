@@ -1,6 +1,6 @@
 
 // Setup Pins, from ones place to sixteens place (i.e., backwards)
-int pins[5] = {2, 3, 4, 5, 9};
+int pins[5] = {2, 3, 4, 5, 6};
 boolean blockTyping = 0;
 //char buffer[2];
 
@@ -71,9 +71,9 @@ void loop()
         */
     
         // Special characters, which don't follow ascii.
-        if(inputNum == 29) character = 46; // Period
-        if(inputNum == 30) character = 32; // Space 
-        if(inputNum == 31) character = 8; // Backspace
+        if(inputNum == 28) character = 46; // Period
+        if(inputNum == 29) character = 32; // Space 
+        if(inputNum == 30) character = 8; // Backspace
     
     
         // Finally, print the character
