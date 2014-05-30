@@ -25,7 +25,7 @@ void loop()
 {
  int inputNum = 0;
 
- for(int x=0; x < 15; x++)// Outer loop for human timing
+ for(int x=0; x < 20; x++)// Outer loop for human timing
  {
   for(int i=0; i <= 4; i++)
   {
@@ -72,7 +72,7 @@ void loop()
     // Finally, print the character
     //Serial.println(character);
     Keyboard.press(character);
-    
+    delay(200); // extra delay for time to lift fingers
     
     
   }
