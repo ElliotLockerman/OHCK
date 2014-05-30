@@ -28,7 +28,7 @@ void loop()
 
 
     // Outer loop for human timing (can't press exactly at the same time)
-    for(int x=0; x < 20; x++) 
+    for(int x=0; x < 1000; x++) 
     {
         for(int i=0; i <= 4; i++)
         {
@@ -95,7 +95,7 @@ void loop()
     */  
 
     // To not overload the computer. 
-    delay(200);
+    delay(100);
   
  
 
