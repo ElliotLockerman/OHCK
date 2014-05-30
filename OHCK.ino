@@ -1,13 +1,13 @@
 
-// Setup Pins, from ones place to sixteens place
-int pins[5] = {2, 3, 4, 5, 6};
+// Setup Pins, from ones place to sixteens place (i.e., backwards)
+int pins[5] = {2, 3, 4, 5, 9};
 //char buffer[2];
 
 
 
 void setup()
 {
-  for(int i=0; i < 4; i++)
+  for(int i=0; i <= 4; i++)
   {
     pinMode(pins[i], INPUT_PULLUP);
   }
@@ -77,7 +77,7 @@ void loop()
 
  
  
-  delay(500);
+  delay(200);
   
   /*
   // Roll the buffer for the next round
