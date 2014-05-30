@@ -1,6 +1,7 @@
 
-// Setup Pins, from ones place to sixteens place (i.e., backwards)
-int pins[5] = {2, 3, 4, 5, 9};
+// Setup characterPins, from ones place to sixteens place (i.e., backwards)
+int characterPins[5] = {2, 3, 4, 5, 6};
+int backspacePin = 7;
 boolean blockTyping = 0;
 //char buffer[2];
 
@@ -10,9 +11,11 @@ void setup()
 {
     for(int i=0; i <= 4; i++)
     {
-        pinMode(pins[i], INPUT_PULLUP);
+        pinMode(characterPins[i], INPUT_PULLUP);
     }
- 
+     
+    pinMode(backspacePin,INPUT_PULLUP);
+     
     //Serial.begin(9600);
   
     Keyboard.begin();
@@ -32,23 +35,24 @@ void loop()
     {
         for(int i=0; i <= 4; i++)
         {
-            //Serial.print(digitalRead(pins[i]));
-            if (digitalRead(pins[i]) == 0) bitWrite(inputNum,i,1);
+            //Serial.print(digitalRead(characterPins[i]));
+            if (digitalRead(characterPins[i]) == 0) bitWrite(inputNum,i,1);
             else bitWrite(inputNum,i,0);
         }   
     }
-    Serial.println();
-    Serial.println(inputNum);
+
+    
+     boolean backspaceState = 0;
+     if (digitalRead(backspacePin) == 0) backspaceState = 1;
+ 
  
     // Tentatively set the character - we might change it later
     char character = inputNum + 96; //1 becomes a, etc 
  
-    //Serial.println(character);
-    //Serial.println();
+    Serial.println(character);
+    Serial.println();
 
-    // Check to see if the key is the same as last time.
-    // If its the same, assume its being held, so don't release
-    // If there the character is 0, no button is being held; release. 
+ 
     if(inputNum == 0) 
     {
         Keyboard.releaseAll();
@@ -57,8 +61,8 @@ void loop()
   
     // Check to see if any button is pressed, and that its
     // not the same as the previous one
-    //pif(inputNum != 0 && character != buffer[0])
-    if(inputNum != 0 && blockTyping == 0)
+    // if(inputNum != 0 && character != buffer[0])
+    if(inputNum != 0 && blockTyping == 0 && backspaceState == 0)
     {
 
     
@@ -72,9 +76,7 @@ void loop()
     
         // Special characters, which don't follow ascii.
         if(inputNum == 29) character = 46; // Period
-        if(inputNum == 30) character = 32; // Space 
-        if(inputNum == 31) character = 8; // Backspace
-    
+        if(inputNum == 30) character = 32; // Space     
     
         // Finally, print the character
         //Serial.println(character);
@@ -83,11 +85,15 @@ void loop()
         // To give time to lift fingers without
         // remaining fingers typing unintentionally
         blockTyping = 1; 
-    
-    
     }
   
-  
+    if(backspaceState == 1)
+    {
+        character = 8;
+        Keyboard.press(character);
+        Serial.println("I got here!");
+    }
+    
     // Roll the buffer for the next round
     /*
     buffer[1] = buffer[0];
