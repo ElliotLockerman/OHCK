@@ -30,7 +30,8 @@ void loop()
   for(int i=0; i <= 4; i++)
   {
     //Serial.print(digitalRead(pins[i]));
-    if (digitalRead(pins[i]) == 0) bitWrite(inputNum,i,1);  
+    if (digitalRead(pins[i]) == 0) bitWrite(inputNum,i,1);
+    else bitWrite(inputNum,i,0);
   }   
   }
   Serial.println();
