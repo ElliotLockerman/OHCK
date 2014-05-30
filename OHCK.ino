@@ -53,18 +53,21 @@ void loop()
   //pif(inputNum != 0 && character != buffer[0])
   if(inputNum != 0)
   {
+
+    
     /*
     // If this is a new sentence, capitalize
-    if(buffer[1] == '.' && buffer[0] == ' ')
+    if(buffer[1] == 46 && buffer[0] == 32)
     {
-      character = inputNum + 64;
+      character = inputNum - 64;
     }
+    */
     
     // Special characters, which don't follow ascii.
-    if(inputNum == 29) character = '.';
-    if(inputNum == 30) character = ' ';   
-    if(inputNum == 30) character = 127; // Backspace
-    */
+    if(inputNum == 29) character = 46; // Period
+    if(inputNum == 30) character = 32; // Space 
+    if(inputNum == 31) character = 8; // Backspace
+    
     
     // Finally, print the character
     //Serial.println(character);
@@ -79,9 +82,10 @@ void loop()
  
   delay(200);
   
-  /*
+ 
   // Roll the buffer for the next round
+  /*
   buffer[1] = buffer[0];
   buffer[0] = character; 
-  */
+ */
 }
