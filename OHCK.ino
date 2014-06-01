@@ -1,7 +1,6 @@
 
 // Setup Pins, from ones place to sixteens place (i.e., backwards)
 int pins[5] = {2, 3, 4, 5, 6};
-boolean blockTyping = 0;
 //char buffer[2];
 
 
@@ -25,17 +24,17 @@ void setup()
 void loop()
 {
     int inputNum = 0;
-
+    boolean buttonWasPressed = 0;
 
     // Outer loop for human timing (can't press exactly at the same time)
-    for(int x=0; x < 1000; x++) 
+    while(buttonWasPressed == 0 || inputNum == 0) 
     {
         for(int i=0; i <= 4; i++)
         {
             //Serial.print(digitalRead(pins[i]));
             if (digitalRead(pins[i]) == 0) bitWrite(inputNum,i,1);
-            else bitWrite(inputNum,i,0);
-        }   
+            buttonWasPressed = 1;
+        }
     }
     Serial.println();
     Serial.println(inputNum);
@@ -46,19 +45,11 @@ void loop()
     //Serial.println(character);
     //Serial.println();
 
-    // Check to see if the key is the same as last time.
-    // If its the same, assume its being held, so don't release
-    // If there the character is 0, no button is being held; release. 
-    if(inputNum == 0) 
-    {
-        Keyboard.releaseAll();
-        blockTyping = 0;
-    }
   
     // Check to see if any button is pressed, and that its
     // not the same as the previous one
-    //pif(inputNum != 0 && character != buffer[0])
-    if(inputNum != 0 && blockTyping == 0)
+    //if(inputNum != 0 && character != buffer[0])
+    if(inputNum != 0)
     {
 
     
@@ -78,12 +69,7 @@ void loop()
     
         // Finally, print the character
         //Serial.println(character);
-        Keyboard.press(character);
-    
-        // To give time to lift fingers without
-        // remaining fingers typing unintentionally
-        blockTyping = 1; 
-    
+        Keyboard.write(character);    
     
     }
   
