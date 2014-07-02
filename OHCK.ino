@@ -8,11 +8,11 @@ int pins[5] = {2, 3, 4, 5, 6};
 void setup()
 {
     for(int i=0; i <= 4; i++)
-    {
+    {pp
         pinMode(pins[i], INPUT_PULLUP);
     }
  
-    //Serial.begin(9600);
+   Serial.begin(300);
   
     Keyboard.begin();
 
@@ -23,66 +23,52 @@ void setup()
 
 void loop()
 {
-    int inputNum = 0;
     boolean buttonWasPressed = 0;
-
+    int inputNum = 0; // The number that will be the letter. Within the while loop below, bits will only be set to 1 as buttons are pressed
+    int currentNum = 0;
+  
     // Outer loop for human timing (can't press exactly at the same time)
-    while(buttonWasPressed == 0 || inputNum == 0) 
+    // This loop checks that at least one button was pressed at one point
+    // and that currently no buttons are presed (i.e., at least one button
+    // was pressed and all were released)
+    while(buttonWasPressed == 0 || currentNum != 0) 
     {
         for(int i=0; i <= 4; i++)
-        {
-            //Serial.print(digitalRead(pins[i]));
-            if (digitalRead(pins[i]) == 0) bitWrite(inputNum,i,1);
-            buttonWasPressed = 1;
+        { 
+            if (digitalRead(pins[i]) == 0) 
+            {
+                bitWrite(inputNum,i, 1);
+                bitWrite(currentNum,i, 1);
+                buttonWasPressed = 1;
+            }
+            else
+            {
+                bitWrite(currentNum, i, 0);
+                
+            }
         }
+        
+        // To not overload the computer.
+        delay(10);
+
+
     }
-    Serial.println();
-    Serial.println(inputNum);
- 
+
     // Tentatively set the character - we might change it later
     char character = inputNum + 96; //1 becomes a, etc 
+
+    // Special characters, which don't follow ascii.
+    if(inputNum == 27) character = 10; // New line
+    if(inputNum == 28) character = 46; // Period
+    if(inputNum == 29) character = 32; // Space 
+    if(inputNum == 30) character = 8; // Backspace
+    
+    
+    // Finally, print the character
+    Keyboard.write(character); 
+
  
-    //Serial.println(character);
-    //Serial.println();
-
-  
-    // Check to see if any button is pressed, and that its
-    // not the same as the previous one
-    //if(inputNum != 0 && character != buffer[0])
-    if(inputNum != 0)
-    {
-
-    
-        /*
-        // If this is a new sentence, capitalize
-        if(buffer[1] == 46 && buffer[0] == 32)
-        {
-        character = inputNum - 64;
-        }
-        */
-    
-        // Special characters, which don't follow ascii.
-        if(inputNum == 28) character = 46; // Period
-        if(inputNum == 29) character = 32; // Space 
-        if(inputNum == 30) character = 8; // Backspace
-    
-    
-        // Finally, print the character
-        //Serial.println(character);
-        Keyboard.write(character);    
-    
-    }
-  
-  
-    // Roll the buffer for the next round
-    /*
-    buffer[1] = buffer[0];
-    buffer[0] = character; 
-    */  
-
     // To not overload the computer. 
     delay(100);
-  
- 
 
 }
